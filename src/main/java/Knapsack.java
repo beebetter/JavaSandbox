@@ -4,6 +4,7 @@ import java.util.List;
 public class Knapsack {
     private int maxWeight;
     private int curMaxPrice;
+    private int curOptWeight;
     private List <Item> items;
     private List <Item> curBestItems;
 
@@ -62,27 +63,33 @@ public class Knapsack {
                 curBestItems.add(items.get(j));
             }
             curMaxPrice = curPrice;
+            this.curOptWeight = curWeight;
         }
     }
     public void setItems() {
         List<Item> items = new ArrayList<Item>();
-        items.add(new Item(1, 1));
-        items.add(new Item(2, 2));
-        items.add(new Item(3, 4));
-        items.add(new Item(4, 6));
-        items.add(new Item(5, 7));
+        items.add(new Item(10, 10));
+        items.add(new Item(20, 20));
+        items.add(new Item(30, 40));
+        items.add(new Item(40, 60));
+        items.add(new Item(50, 70));
         this.items = items;
     }
 
     public void printResult() {
-        System.out.println("Price: " + curMaxPrice);
-        System.out.println("Take:");
-        for (int i = 0; i < curBestItems.size(); i++) {
-            System.out.println(curBestItems.get(i).weight + " " + curBestItems.get(i).price);
+        if (curBestItems != null && curBestItems.size() > 0) {
+            System.out.println("Take:");
+            for (int i = 0; i < curBestItems.size(); i++) {
+                System.out.println(curBestItems.get(i).weight + " " + curBestItems.get(i).price);
+            }
+            System.out.println("Weight: " + curOptWeight + " Price: " + curMaxPrice);
+        } else {
+            System.out.println("There are no elements to take");
         }
+
     }
     public static void main(String[] args) {
-        Knapsack knapsack = new Knapsack(5);
+        Knapsack knapsack = new Knapsack(60);
         knapsack.setItems();
         knapsack.factoradicAlgo();
         knapsack.printResult();
