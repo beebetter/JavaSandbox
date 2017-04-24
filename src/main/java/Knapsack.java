@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -5,8 +6,8 @@ public class Knapsack {
     private int maxWeight;
     private int curMaxPrice;
     private int curOptWeight;
-    private List <Item> items;
-    private List <Item> curBestItems;
+    private List<Item> items;
+    private List<Item> curBestItems;
 
     public Knapsack(int maxWeight) {
         this.maxWeight = maxWeight;
@@ -51,9 +52,16 @@ public class Knapsack {
             check(getPermutation(items.size(), i, items));
         }
     }
+
+    public void factoradicAlgo(int start, int end) {
+        for (int i = start; i < end; i++) {
+            check(getPermutation(items.size(), i, items));
+        }
+    }
+
     public void check(List<Item> items) {
         int i = 0, curPrice = 0, curWeight = 0;
-        for (; i < items.size() && curWeight + items.get(i).weight  <= maxWeight; i++) {
+        for (; i < items.size() && curWeight + items.get(i).weight <= maxWeight; i++) {
             curWeight += items.get(i).weight;
             curPrice += items.get(i).price;
         }
@@ -66,6 +74,7 @@ public class Knapsack {
             this.curOptWeight = curWeight;
         }
     }
+
     public void setItems() {
         List<Item> items = new ArrayList<Item>();
         items.add(new Item(10, 10));
@@ -77,6 +86,7 @@ public class Knapsack {
     }
 
     public void printResult() {
+        System.out.println("Max weight: " + maxWeight);
         if (curBestItems != null && curBestItems.size() > 0) {
             System.out.println("Take:");
             for (int i = 0; i < curBestItems.size(); i++) {
@@ -88,6 +98,16 @@ public class Knapsack {
         }
 
     }
+
+
+    public List<Item> getCurBestItems() {
+        return curBestItems;
+    }
+
+    public int getCurMaxPrice() {
+        return curMaxPrice;
+    }
+
     public static void main(String[] args) {
         Knapsack knapsack = new Knapsack(60);
         knapsack.setItems();
