@@ -1,8 +1,9 @@
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-public class Knapsack {
+public class Knapsack implements Serializable {
     private int maxWeight;
     private int curMaxPrice;
     private int curOptWeight;
@@ -53,8 +54,8 @@ public class Knapsack {
         }
     }
 
-    public void factoradicAlgo(int start, int end) {
-        for (int i = start; i < end; i++) {
+    public void factoradicAlgo(int begin, int end) {
+        for (int i = begin; i < end; i++) {
             check(getPermutation(items.size(), i, items));
         }
     }
@@ -75,18 +76,28 @@ public class Knapsack {
         }
     }
 
-    public void setItems() {
+    public void setItems(int n) {
+        List<Item> allPossibleItems = new ArrayList<Item>();
+        allPossibleItems.add(new Item(10, 10));
+        allPossibleItems.add(new Item(20, 20));
+        allPossibleItems.add(new Item(30, 40));
+        allPossibleItems.add(new Item(40, 60));
+        allPossibleItems.add(new Item(50, 70));
+        allPossibleItems.add(new Item(60, 90));
+        allPossibleItems.add(new Item(70, 100));
+        allPossibleItems.add(new Item(80, 110));
+        allPossibleItems.add(new Item(90, 120));
+        allPossibleItems.add(new Item(100, 125));
+        allPossibleItems.add(new Item(110, 130));
+        allPossibleItems.add(new Item(120, 135));
         List<Item> items = new ArrayList<Item>();
-        items.add(new Item(10, 10));
-        items.add(new Item(20, 20));
-        items.add(new Item(30, 40));
-        items.add(new Item(40, 60));
-        items.add(new Item(50, 70));
+        for (int i = 0; i < n; i++) {
+            items.add(allPossibleItems.get(i));
+        }
         this.items = items;
     }
 
     public void printResult() {
-        System.out.println("Max weight: " + maxWeight);
         if (curBestItems != null && curBestItems.size() > 0) {
             System.out.println("Take:");
             for (int i = 0; i < curBestItems.size(); i++) {
@@ -99,19 +110,17 @@ public class Knapsack {
 
     }
 
-
-    public List<Item> getCurBestItems() {
-        return curBestItems;
-    }
-
-    public int getCurMaxPrice() {
-        return curMaxPrice;
-    }
-
     public static void main(String[] args) {
-        Knapsack knapsack = new Knapsack(60);
-        knapsack.setItems();
+        System.out.println("Write [number] of items (<=12) and [maxWeight]");
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt(), maxWeight = in.nextInt();
+        Knapsack knapsack = new Knapsack(maxWeight);
+        knapsack.setItems(n);
+        long startTime = System.nanoTime();
         knapsack.factoradicAlgo();
+        long duration = (System.nanoTime() - startTime);
+        int timeProcessing = (int) (duration / 1000000);
+        System.out.println("Factoradic algo processing time: " + timeProcessing);
         knapsack.printResult();
     }
 }
