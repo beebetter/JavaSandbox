@@ -14,6 +14,9 @@ public class Knapsack implements Serializable {
         this.maxWeight = maxWeight;
     }
 
+    public Knapsack() {
+    }
+
     public class Item {
         Integer weight;
         Integer price;
@@ -22,6 +25,14 @@ public class Knapsack implements Serializable {
             this.weight = weight;
             this.price = price;
         }
+    }
+
+    public void setMaxWeight(int maxWeight) {
+        this.maxWeight = maxWeight;
+    }
+
+    public int getMaxWeight() {
+        return maxWeight;
     }
 
     private List<Item> getPermutation(int n, int k, List<Item> items) {
@@ -77,33 +88,39 @@ public class Knapsack implements Serializable {
     }
 
     public void setItems(int n) {
-        List<Item> allPossibleItems = new ArrayList<Item>();
-        allPossibleItems.add(new Item(10, 10));
-        allPossibleItems.add(new Item(20, 20));
-        allPossibleItems.add(new Item(30, 40));
-        allPossibleItems.add(new Item(40, 60));
-        allPossibleItems.add(new Item(50, 70));
-        allPossibleItems.add(new Item(60, 90));
-        allPossibleItems.add(new Item(70, 100));
-        allPossibleItems.add(new Item(80, 110));
-        allPossibleItems.add(new Item(90, 120));
-        allPossibleItems.add(new Item(100, 125));
-        allPossibleItems.add(new Item(110, 130));
-        allPossibleItems.add(new Item(120, 135));
         List<Item> items = new ArrayList<Item>();
-        for (int i = 0; i < n; i++) {
-            items.add(allPossibleItems.get(i));
+        for (int i = 1; i <= n; i++) {
+            items.add(new Item(((i * 12 + 5) / 10) * 10, i * 10));
         }
         this.items = items;
     }
+
+    public void printItems() {
+        System.out.println("List of all items in knapsack");
+        System.out.println("ціна вага");
+        for (int i = 0; i < items.size(); i++) {
+            System.out.println(items.get(i).price + " " + items.get(i).weight);
+        }
+    }
+
+    public int calculateMaxWeight(int n) {
+        return ((n * (n + 1) / 4)) * 10 + 5;
+    }
+
+    public void ini(int n) {
+        setItems(n);
+        int maxWeight = calculateMaxWeight(n);
+        setMaxWeight(maxWeight);
+    }
+
 
     public void printResult() {
         if (curBestItems != null && curBestItems.size() > 0) {
             System.out.println("Take:");
             for (int i = 0; i < curBestItems.size(); i++) {
-                System.out.println(curBestItems.get(i).weight + " " + curBestItems.get(i).price);
+                System.out.println(curBestItems.get(i).price + " " + curBestItems.get(i).weight );
             }
-            System.out.println("Weight: " + curOptWeight + " Price: " + curMaxPrice);
+            System.out.println("Price: " + curMaxPrice + " Weight: " + curOptWeight);
         } else {
             System.out.println("There are no elements to take");
         }
@@ -111,16 +128,45 @@ public class Knapsack implements Serializable {
     }
 
     public static void main(String[] args) {
-        System.out.println("Write [number] of items (<=12) and [maxWeight]");
+        System.out.println("Write number of items (<=12) and number of tests");
         Scanner in = new Scanner(System.in);
-        int n = in.nextInt(), maxWeight = in.nextInt();
-        Knapsack knapsack = new Knapsack(maxWeight);
-        knapsack.setItems(n);
-        long startTime = System.nanoTime();
-        knapsack.factoradicAlgo();
-        long duration = (System.nanoTime() - startTime);
-        int timeProcessing = (int) (duration / 1000000);
-        System.out.println("Factoradic algo processing time: " + timeProcessing);
-        knapsack.printResult();
+        int n = in.nextInt(), numOfTests = in.nextInt();
+        Knapsack ks = new Knapsack();
+        ks.ini(n);
+        ks.printItems();
+        System.out.println("Максимальна_вага: " + ks.getMaxWeight());
+        long allDuration = 0;
+        int minTime = 999999999, maxTime = 0;
+        System.out.println("-------------------------------------------");
+        System.out.println("Номер_тесту Час");
+        for (int i = 1; i <= numOfTests; i++) {
+            Knapsack knapsack = new Knapsack();
+            knapsack.ini(n);
+            long startTime = System.nanoTime();
+            knapsack.factoradicAlgo();
+            long duration = (System.nanoTime() - startTime);
+            allDuration +=duration;
+            int timeProcessing = (int) (duration / 1000000);
+            if (minTime > timeProcessing) {
+                minTime = timeProcessing;
+            }
+            if (maxTime < timeProcessing) {
+                maxTime = timeProcessing;
+            }
+            System.out.println(i + " " + timeProcessing);
+            if (i == numOfTests) {
+                System.out.println("-------------------------------------------");
+                knapsack.printResult();
+            }
+        }
+        int averageTimeProcessing = (int) (allDuration / 1000000 / numOfTests);
+        System.out.println("-------------------------------------------");
+        System.out.println("Кількість елементів | Кількість тестів | Середній час роботи (мс) | " +
+                "Мінімальний час роботи (мс) | Максимальний час роботи (мс)");
+        System.out.println(n + " " + numOfTests + " " + averageTimeProcessing + " " + minTime + " " + maxTime);
+    }
+
+    public int getCurMaxPrice() {
+        return this.curMaxPrice;
     }
 }

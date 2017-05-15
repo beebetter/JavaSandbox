@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class AllPermutationsGenerator {
     private <T> void generate(int n, List<T> arr) {
@@ -66,8 +67,11 @@ public class AllPermutationsGenerator {
         System.out.println();
     }
     public static void main(String[] args) {
+        System.out.println("Write number of items");
+        //Scanner in = new Scanner();
+        //int n = in.nextInt();
         List<Integer> arr = new ArrayList<Integer>();
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 11; i++) {
             arr.add(i);
         }
         AllPermutationsGenerator test = new AllPermutationsGenerator();
