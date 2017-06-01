@@ -161,9 +161,8 @@ public class Knapsack implements Serializable {
         }
         int averageTimeProcessing = (int) (allDuration / 1000000 / numOfTests);
         System.out.println("-------------------------------------------");
-        System.out.println("Кількість елементів | Кількість тестів | Середній час роботи (мс) | " +
-                "Мінімальний час роботи (мс) | Максимальний час роботи (мс)");
-        System.out.println(n + " " + numOfTests + " " + averageTimeProcessing + " " + minTime + " " + maxTime);
+        System.out.println("Кількість елементів | Кількість тестів | Середній час роботи (мс)");
+        System.out.println(n + " " + numOfTests + " " + averageTimeProcessing);
     }
 
     public int getCurMaxPrice() {
