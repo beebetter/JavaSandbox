@@ -2,7 +2,7 @@ import java.io.File;
 
 public class FolderGenerator {
     public static String[] getMessages() {
-        String rawMessage = "12, 3, 4.";
+        String rawMessage = "";
         String[] messages = rawMessage.split(", |\\. |\\.");
         return messages;
     }
